@@ -1,0 +1,11 @@
+{
+  "name": "yarn",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.5.1"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "ayano kobayashi <ultrakobayashiayano@yahoo.co.jp>",
+  "license": "MIT"
+}
