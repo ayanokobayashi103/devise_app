@@ -40,3 +40,6 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'ransack'
+gem 'rails_admin', '~> 2.0'
+gem 'cancancan'

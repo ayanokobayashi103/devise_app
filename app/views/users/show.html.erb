@@ -1,0 +1,16 @@
+<h1><%= "#{@user.name}" %>さんのページ</h1>
+<% if current_user.id == @user.id %>
+  <p>メールアドレス: <%= @user.email %></p>
+<% end %>
+
+<h4>フォローしてるひと</h4>
+<% @following.each do |following|%>
+  <p>Name: <%= following.name %>, Email: <%= following.email %></p>
+<% end %>
+
+<h4>フォローされてるひと</h4>
+<% @followers.each do |followers|%>
+  <p>Name: <%= followers.name %>, Email: <%= followers.email %></p>
+<% end %>
+
+<%= link_to 'ユーザーの一覧', users_path %>

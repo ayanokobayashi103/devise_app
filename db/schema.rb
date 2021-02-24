@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_143203) do
+ActiveRecord::Schema.define(version: 2021_02_24_014728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,38 @@ ActiveRecord::Schema.define(version: 2021_02_08_143203) do
     t.index ["blog_id"], name: "index_comments_on_blog_id"
   end
 
+  create_table "rating_rates", id: :serial, force: :cascade do |t|
+    t.decimal "value", precision: 25, scale: 16, default: "0.0"
+    t.string "author_type", limit: 10, null: false
+    t.integer "author_id", null: false
+    t.string "resource_type", limit: 10, null: false
+    t.integer "resource_id", null: false
+    t.string "scopeable_type", limit: 10
+    t.integer "scopeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id", "resource_type", "resource_id", "scopeable_type", "scopeable_id"], name: "index_rating_rates_on_author_and_resource_and_scopeable", unique: true
+    t.index ["author_type", "author_id"], name: "index_rating_rates_on_author_type_and_author_id"
+    t.index ["resource_type", "resource_id"], name: "index_rating_rates_on_resource_type_and_resource_id"
+    t.index ["scopeable_type", "scopeable_id"], name: "index_rating_rates_on_scopeable_type_and_scopeable_id"
+  end
+
+  create_table "rating_ratings", id: :serial, force: :cascade do |t|
+    t.decimal "average", precision: 25, scale: 16, default: "0.0"
+    t.decimal "estimate", precision: 25, scale: 16, default: "0.0"
+    t.integer "sum", default: 0
+    t.integer "total", default: 0
+    t.string "resource_type", limit: 10, null: false
+    t.integer "resource_id", null: false
+    t.string "scopeable_type", limit: 10
+    t.integer "scopeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_type", "resource_id", "scopeable_type", "scopeable_id"], name: "index_rating_rating_on_resource_and_scopeable", unique: true
+    t.index ["resource_type", "resource_id"], name: "index_rating_ratings_on_resource_type_and_resource_id"
+    t.index ["scopeable_type", "scopeable_id"], name: "index_rating_ratings_on_scopeable_type_and_scopeable_id"
+  end
+
   create_table "relationships", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "followed_id"
@@ -38,6 +70,18 @@ ActiveRecord::Schema.define(version: 2021_02_08_143203) do
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "shopadmins", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_shopadmins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_shopadmins_on_reset_password_token", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,6 +102,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_143203) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.string "username"
+    t.boolean "admin", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
