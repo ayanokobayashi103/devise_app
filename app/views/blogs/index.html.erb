@@ -1,4 +1,8 @@
+<% if current_user.try(:admin?) %>
+<h1>Blogs_Admin</h1>
+<% else %>
 <h1>Blogs</h1>
+<% end %>
 
 <%= search_form_for @q do |f| %>
 <%= f.label :title_or_content %>
